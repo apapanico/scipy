@@ -2532,17 +2532,12 @@ end subroutine <prefix>gbtrs
 ! RRR routines for standard eigenvalue problem
 !
 
-subroutine <prefix2>syevr(jobz,range,uplo,n,a,lda,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,iwork,liwork,info,vl,vu)
+subroutine <prefix2>syevr(jobz,range,uplo,n,a,lda,vl,vu,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,iwork,liwork,info)
     ! Standard Eigenvalue Problem
     ! simple/expert driver: all eigenvectors or optionally selected eigenvalues
     ! algorithm: Relatively Robust Representation
     ! matrix storage
     ! Real - Single/Double precision
-
-    fortranname <prefix2>syevr
-    callstatement (*f2py_func)(jobz,range,uplo,&n,a,&lda,&vl,&vu,&il,&iu,&abstol,&m,w,z,&ldz,isuppz,work,&lwork,iwork,&liwork,&info)
-    callprotoargument char*,char*,char*,int*,<ctype2>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,int*,int*,int*
-
     character intent(in) :: jobz='V'
     character intent(in) :: range='A'
     character intent(in) :: uplo='L'
@@ -2566,17 +2561,12 @@ subroutine <prefix2>syevr(jobz,range,uplo,n,a,lda,il,iu,abstol,m,w,z,ldz,isuppz,
     integer  intent(out) :: info
 end subroutine <prefix2>syevr
 
-subroutine <prefix2c>heevr(jobz,range,uplo,n,a,lda,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,rwork,lrwork,iwork,liwork,info,vl,vu)
+subroutine <prefix2c>heevr(jobz,range,uplo,n,a,lda,vl,vu,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,rwork,lrwork,iwork,liwork,info)
     ! Standard Eigenvalue Problem
     ! simple/expert driver: all eigenvectors or optionally selected eigenvalues
     ! algorithm: Relatively Robust Representation
     ! matrix storage
     ! Real - Single/Double precision
-
-    fortranname <prefix2c>heevr
-    callstatement (*f2py_func)(jobz,range,uplo,&n,a,&lda,&vl,&vu,&il,&iu,&abstol,&m,w,z,&ldz,isuppz,work,&lwork,rwork,&lrwork,iwork,&liwork,&info)
-    callprotoargument char*,char*,char*,int*,<ctype2c>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,<ctype2>*,<ctype2c>*,int*,int*,<ctype2c>*,int*,<ctype2>*,int*,int*,int*,int*
-
     character intent(in) :: jobz='V'
     character intent(in) :: range='A'
     character intent(in) :: uplo='L'

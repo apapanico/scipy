@@ -27,6 +27,10 @@ except ImportError:
 from scipy.linalg.lapack import get_lapack_funcs
 from scipy.linalg.blas import get_blas_funcs
 
+# Special import for monkey patched functions
+from scipy.linalg.lapack import dsyevr, ssyevr, cheevr, zheevr
+
+
 REAL_DTYPES = [np.float32, np.float64]
 COMPLEX_DTYPES = [np.complex64, np.complex128]
 DTYPES = REAL_DTYPES + COMPLEX_DTYPES
@@ -368,8 +372,7 @@ class TestDlasd4(TestCase):
             res = lasd4(i, sgm, mvc)
             roots.append(res[1])
 
-            assert_((res[3] <= 0),"LAPACK root finding dlasd4 failed to find \
-                                    the singular value %i" % i)
+            assert_((res[3] <= 0),"LAPACK root finding dlasd4 failed to find \ the singular value %i" % i)
         roots = np.array(roots)[::-1]
 
         assert_((not np.any(np.isnan(roots)),"There are NaN roots"))
@@ -516,8 +519,7 @@ class TestFlapackEV(TestCase):
         m, n = 5, 4
         _types = {'s': np.single, 'd': np.double}
         for t in 'sd':
-            f = getattr(flapack, t + 'syevr', None)
-            assert f is not None
+            f = ssyevr if t == 's' else dsyevr
 
             A = np.random.random((m, n)).astype(_types[t])
             A = np.dot(A.T, A)
@@ -525,6 +527,8 @@ class TestFlapackEV(TestCase):
 
             job = 'N'
             uplo = 'U'
+            overwrite_a = 0
+            lwork = 200
 
             for il in range(1, n + 1):
                 for iu in range(il, n + 1):
@@ -536,15 +540,15 @@ class TestFlapackEV(TestCase):
 
                     vl = np.floor(1000. * lam_full[il - 1]) / 1000.
                     vu = np.ceil(1000. * lam_full[iu - 1]) / 1000.
-                    lam, v, ret = f(A, job, 'V', uplo, 1, 1, 26 * 5, vl, vu)
+                    lam, v, ret = f(A, job, 'V', uplo, 1, 1,
+                                    lwork, overwrite_a, vl, vu)
                     assert_array_almost_equal(lam[:n_eig], targ_lam)
 
     def test_heevr(self):
         m, n = 5, 4
         _types = {'c': np.complex64, 'z': np.complex128}
         for t in 'cz':
-            f = getattr(flapack, t + 'heevr', None)
-            assert f is not None
+            f = cheevr if t == 'c' else zheevr
 
             R = np.random.random((m, n))
             I = np.random.random((m, n))
@@ -554,6 +558,8 @@ class TestFlapackEV(TestCase):
 
             job = 'N'
             uplo = 'U'
+            overwrite_a = 0
+            lwork = 200
 
             for il in range(1, n + 1):
                 for iu in range(il, n + 1):
@@ -565,7 +571,8 @@ class TestFlapackEV(TestCase):
 
                     vl = np.floor(1000. * lam_full[il - 1]) / 1000.
                     vu = np.ceil(1000. * lam_full[iu - 1]) / 1000.
-                    lam, v, ret = f(A, job, 'V', uplo, 1, 1, 26 * 5, vl, vu)
+                    lam, v, ret = f(A, job, 'V', uplo, 1, 1,
+                                    lwork, overwrite_a, vl, vu)
                     assert_array_almost_equal(lam[:n_eig], targ_lam, decimal=5)
 
 
