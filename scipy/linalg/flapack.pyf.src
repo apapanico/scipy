@@ -2647,6 +2647,67 @@ subroutine zheevr(jobz,range,uplo,n,a,lda,vl,vu,il,iu,abstol,m,w,z,ldz,isuppz,wo
     integer intent(hide),dimension(liwork) :: iwork
     integer  intent(out) :: info
 end subroutine zheevr
+
+subroutine <prefix2>syevr_lwork(jobz,range,uplo,n,a,lda,vl,vu,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,iwork,liwork,info)
+     ! LWORK computation for -syevr
+
+    fortranname <prefix2>syevr
+    callstatement (*f2py_func)(jobz,range,uplo,&n,&a,&lda,&vl,&vu,&il,&iu,&abstol,&m,&w,&z,&ldz,&isuppz,&work,&lwork,&iwork,&liwork,&info)
+ callprotoargument char*,char*,char*,int*,<ctype2>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,int*,int*,int*
+
+    character intent(in) :: jobz='V'
+    character intent(in) :: range='A'
+    character intent(in) :: uplo='L'
+    integer intent(in) :: n
+    <ftype2> intent(hide) :: a
+    integer intent(hide),depend(n) :: lda=n
+    <ftype2> intent(hide) :: vl=0
+    <ftype2> intent(hide) :: vu=1
+    integer intent(hide) :: il=1
+    integer intent(hide),depend(n) :: iu=n
+    <ftype2> intent(hide) :: abstol=0.
+    integer  intent(hide),depend(il,iu) :: m=iu-il+1
+    <ftype2> intent(hide) :: w
+    <ftype2> intent(hide) :: z
+    integer intent(hide) :: ldz
+    integer intent(hide) :: isuppz
+    integer intent(hide) :: lwork=-1
+    <ftype2>  intent(out) :: work
+    integer intent(hide):: liwork=-1
+    integer intent(out) :: iwork
+    integer  intent(out) :: info
+end subroutine prefix2>syevr_lwork
+
+subroutine <prefix2c>heevr_lwork(jobz,range,uplo,n,a,lda,vl,vu,il,iu,abstol,m,w,z,ldz,isuppz,work,lwork,iwork,liwork,info)
+     ! LWORK computation for -heevr
+
+    fortranname <prefix2c>heevr
+    callstatement (*f2py_func)(jobz,range,uplo,&n,&a,&lda,&vl,&vu,&il,&iu,&abstol,&m,&w,&z,&ldz,&isuppz,&work,&lwork,&iwork,&liwork,&info)
+ callprotoargument char*,char*,char*,int*,<ctype2c>*,int*,<ctype2>*,<ctype2>*,int*,int*,<ctype2>*,int*,<ctype2>*,<ctype2c>*,int*,int*,<ctype2c>*,int*,int*,int*,int*
+
+    character intent(in) :: jobz='V'
+    character intent(in) :: range='A'
+    character intent(in) :: uplo='L'
+    integer intent(in) :: n
+    <ftype2c> intent(hide) :: a
+    integer intent(hide),depend(n) :: lda=n
+    <ftype2> intent(hide) :: vl=0
+    <ftype2> intent(hide) :: vu=1
+    integer intent(hide) :: il=1
+    integer intent(hide),depend(n) :: iu=n
+    <ftype2> intent(hide) :: abstol=0.
+    integer  intent(hide),depend(il,iu) :: m=iu-il+1
+    <ftype2> intent(hide) :: w
+    <ftype2c> intent(hide) :: z
+    integer intent(hide) :: ldz
+    integer intent(hide) :: isuppz
+    integer intent(hide) :: lwork=-1
+    <ftype2c>  intent(out) :: work
+    integer intent(hide):: liwork=-1
+    integer intent(out) :: iwork
+    integer  intent(out) :: info
+end subroutine prefix2c>heevr_lwork
+
 subroutine ssygv(itype,jobz,uplo,n,a,lda,b,ldb,w,work,lwork,info)
     ! Generalized Eigenvalue Problem
     ! simple driver (all eigenvectors)
